@@ -2,7 +2,7 @@ pipeline{
     //Directives
     agent any
     tools {
-       // maven 'maven'
+       maven 'maven'
     }
 
     stages {
@@ -35,7 +35,7 @@ pipeline{
         // }
         stage ('Deploy'){
             steps {
-                echo ' deploying'
+                echo ' deploying.....'
        
                 }
 
