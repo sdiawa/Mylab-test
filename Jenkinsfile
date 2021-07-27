@@ -32,6 +32,10 @@ pipeline{
     // Stage3 : Publish the artefacts  to Nexus
             stage ('Publish to Nexus'){
                 steps {
+                   script{
+                    
+                  def NexusRepo = Version.endsWith("SNAPSHOT") ? "ddskDevopsLab-SNAPSHOT" : "dskDevopsLab-RELEASE"
+
                    nexusArtifactUploader artifacts: 
                    [[artifactId: "${ArtifactId}", 
                    classifier: '',
@@ -42,11 +46,11 @@ pipeline{
                    nexusUrl: '3.137.142.24:8081',
                    nexusVersion: 'nexus3',
                    protocol: 'http', 
-                   repository: 'dskDevopsLab-SNAPSHOT', 
+                   repository: "${NexusRepo}", 
                    version: "${Version}"
                  }
             }
-        
+        }
       // Stage 4 :Print some information 
                 stage ('Print some information Variables'){
                     steps {
