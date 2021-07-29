@@ -70,7 +70,8 @@ pipeline{
 
         //     }
         // }
-        stage ('Deploy'){
+    // Stage5 : deploy via ansible tomcat
+        stage ('Deploy to tomcat '){
             steps {
                 echo ' deploying.....'
                 sshPublisher(publishers: 
@@ -81,6 +82,34 @@ pipeline{
                             cleanRemote: false, 
                             // excludes: '',
                             execCommand: 'ansible-playbook /opt/playbooks/telechargeretdeployer.yaml -i /opt/playbooks/hosts ',
+                            execTimeout: 120000, 
+                            // flatten: false,
+                            // makeEmptyDirs: false, 
+                            // noDefaultExcludes: false, 
+                            // patternSeparator: '[, ]+', 
+                            // remoteDirectory: '', 
+                            // remoteDirectorySDF: false, 
+                            // removePrefix: '', 
+                            // sourceFiles: ''
+                    )],
+                    usePromotionTimestamp: false, 
+                    useWorkspaceInPromotion: false, 
+                    verbose: false)]) 
+                }
+
+            }
+    // Stage6 : deploy via ansible to docker
+        stage ('Deploy to docker'){
+            steps {
+                echo ' deploying.....'
+                sshPublisher(publishers: 
+                [sshPublisherDesc(
+                    configName: 'Ansible_server',
+                    transfers: [
+                        sshTransfer(
+                            cleanRemote: false, 
+                            // excludes: '',
+                            execCommand: 'ansible-playbook /opt/playbooks/telechargeretdeployer_docker.yaml" -i /opt/playbooks/hosts ',
                             execTimeout: 120000, 
                             // flatten: false,
                             // makeEmptyDirs: false, 
