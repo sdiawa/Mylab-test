@@ -129,3 +129,13 @@ pipeline{
         }
   }
         
+// Stage7 : Testing
+        stage ('Sonarqube Analyse'){
+            steps {
+                echo ' source code published to Sonarqube......'
+                withSonarQubeEnv('sonarqube'){
+                     sh 'mvn sonar:sonar'
+                }
+            }
+        }
+       
